@@ -1,0 +1,16 @@
+[Unit]
+Description=Rikitraki Frontend
+After=network.target
+After=rikitrakiws.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+User=rikitraki
+
+ExecStart=/bin/bash /home/mah/Ballon/src/rikitraki/rikitraki.sh
+
+[Install]
+WantedBy=multi-user.target
