@@ -123,6 +123,7 @@ export var tmUtils = (function () {
 			return 100;
 		}
 
+
 		// Base structure for the CZML
 		var trackCZML = [
 			{
@@ -155,10 +156,16 @@ export var tmUtils = (function () {
 					width: 7,
 					leadTime: 0
 				},
-				billboard: {
-						image: 'images/marker.png',
-						verticalOrigin: 'BOTTOM',
-						show: false
+				//billboard: {
+				//		image: 'images/marker.png',
+				//		verticalOrigin: 'BOTTOM',
+				//		show: false
+				//},
+				//
+				model: {
+						gltf : 'images/OE-SOE.glb',
+					        minimumPixelSize : 64,
+						show : true
 				},
 				position: {
 					cartographicDegrees: []
