@@ -741,16 +741,16 @@ export var tmMap = (function () {
 								var ent = gds.entities.getById('picS-'+ $(this).attr('geoTagXRef'));
 								if (ent) {
 									$(this).css('border-color', tmConstants.SELECTED_THUMBNAIL_COLOR);
-									ent.billboard.show = true;
-									gds.entities.getById('pic-'+ $(this).attr('geoTagXRef')).billboard.show = false;
+									ent.model.show = true;
+									gds.entities.getById('pic-'+ $(this).attr('geoTagXRef')).model.show = false;
 								}
 							},
 							function() {
 								var ent = gds.entities.getById('picS-'+ $(this).attr('geoTagXRef'));
 								if (ent) {
 									$(this).css('border-color', '#fff');
-									gds.entities.getById('pic-'+ $(this).attr('geoTagXRef')).billboard.show = true;
-									ent.billboard.show = false;
+									gds.entities.getById('pic-'+ $(this).attr('geoTagXRef')).model.show = true;
+									ent.model.show = false;
 								}
 							}
 						);
@@ -928,9 +928,9 @@ export var tmMap = (function () {
 				console.log(grabbedHeight);
 
 				if (Cesium.Cartesian3.distance(geoTagsDataSource.entities.values[i].position.getValue(), position) < 100) {
-					geoTagsDataSource.entities.values[i].billboard.show = true;
+					geoTagsDataSource.entities.values[i].model.show = true;
 				} else {
-					geoTagsDataSource.entities.values[i].billboard.show = false;
+					geoTagsDataSource.entities.values[i].model.show = false;
 				}
 			}
 		} */
@@ -951,7 +951,7 @@ export var tmMap = (function () {
 	function resetPlay() {
 		viewer.clock.shouldAnimate = false;
 		viewer.trackedEntity = undefined;
-		trackDataSource.entities.getById('track').billboard.show = false;
+		trackDataSource.entities.getById('track').model.show = false;
 		readyToPlayButtonState();
 		viewer.clock.onTick.removeEventListener(clockTracker);
 	}
@@ -989,7 +989,7 @@ export var tmMap = (function () {
 		playingButtonState();
 		viewer.trackedEntity = trackDataSource.entities.getById('track');
 		viewer.clock.shouldAnimate = true;
-		trackDataSource.entities.getById('track').billboard.show = true;
+		trackDataSource.entities.getById('track').model.show = true;
 	}
 
 	function enterPauseMode() {
