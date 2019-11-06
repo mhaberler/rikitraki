@@ -156,16 +156,17 @@ export var tmUtils = (function () {
 					width: 7,
 					leadTime: 0
 				},
-				//billboard: {
-				//		image: 'images/marker.png',
-				//		verticalOrigin: 'BOTTOM',
-				//		show: false
-				//},
-				//
+			//	billboard: {
+			//			image: 'images/marker.png',
+			//			verticalOrigin: 'BOTTOM',
+			//			show: false
+			//	},
+
 				model: {
-						gltf : 'images/OE-SOE.glb',
-					        minimumPixelSize : 64,
-						show : true
+				    // gltf : 'images/Cessna-208-CaravanW.glb',
+				    gltf: 'images/OE-SOE.glb',
+				    minimumPixelSize: 64,
+				    show: true
 				},
 				position: {
 					cartographicDegrees: []
