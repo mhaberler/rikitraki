@@ -549,6 +549,7 @@ export var tmForms = (function () {
 				track.trackGPX = $('#track-file')[0].files[0].name;
 				track.trackName = $('#track-name').val();
 				track.trackDescription = $('#track-description').val();
+				track.trackVehicle = $('#vehicle-name').val();
 				track.trackGPXBlob = fReader.result;
 				track.hasPhotos = false;
 				makeTrackPhotos (singleLineString, function(trackPhotos) {
@@ -718,6 +719,7 @@ export var tmForms = (function () {
 			// Set current values on the form for editing
 			$('#edit-track-name').val(track.trackName);
 			$('#edit-track-description').val(track.trackDescription);
+			$('#edit-vehicle-name').val(track.trackVehicle);
 			$('#edit-track-activity').val(track.trackType ? track.trackType : 'Hiking'); // For compatibility with old data
 			$('.edit-track-level[value=' + track.trackLevel + ']').prop('checked', true);
 			if (track.trackFav) {
@@ -859,11 +861,12 @@ export var tmForms = (function () {
 
 			var timeOffset = parseFloat($('#edit-track-time-offset').val());
 			var trackChanged = false;
-			var fields = ['trackName', 'trackDescription', 'trackFav', 'trackLevel', 'trackType', 'trackRegionTags'];
+			var fields = ['trackName', 'trackDescription', 'trackVehicle', 'trackFav', 'trackLevel', 'trackType', 'trackRegionTags'];
 			var t = {};
 			t.trackId = track.trackId;
 			t.trackName = $('#edit-track-name').val();
 			t.trackDescription = $('#edit-track-description').val();
+			t.trackVehicle = $('#edit-vehicle-name').val();
 			t.trackFav = $('#edit-track-favorite').is(':checked');
 			t.trackLevel = $('.edit-track-level:checked').val();
 			t.trackType = $('#edit-track-activity').val();
