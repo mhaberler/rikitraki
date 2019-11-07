@@ -501,9 +501,12 @@ export var tmMap = (function () {
 
 		var defaultBaseMapLayer = populateBaseMapLayerControl();
 
-    Cesium.Ion.defaultAccessToken = tmConstants.CESIUM_ACCESS_TOKEN;
+    	Cesium.Ion.defaultAccessToken = tmConstants.CESIUM_ACCESS_TOKEN;
 
 		viewer = new Cesium.Viewer('globe', {
+							vrButton: true,
+							// Click the VR button in the bottom right of the screen to switch to VR mode.
+
 							// scene3DOnly: true,
 							baseLayerPicker: false,
 							imageryProvider: new Cesium.UrlTemplateImageryProvider({
@@ -511,19 +514,23 @@ export var tmMap = (function () {
 								maximumLevel: defaultBaseMapLayer.maxZoom,
 								credit: defaultBaseMapLayer.attribution
 							}),
-							animation: false,
-							fullscreenButton: false,
+							animation: false,  // true: use Cesium.Animation control widget
+							fullscreenButton: true,
 							geocoder: false,
 							homeButton: false,
 							infoBox: false,
 							sceneModePicker: false,
 							selectionIndicator: false,
-							timeline: false,
+							timeline: true,
 							navigationHelpButton: false,
-							navigationInstructionsInitiallyVisible: false,
+							navigationInstructionsInitiallyVisible: true,
 							scene3DOnly: true,
+							// automaticallyTrackDataSourceClocks: true,
 							creditContainer: 'creditContainer'
 							});
+
+		viewer.scene.globe.enableLighting = true;
+		viewer.scene.globe.depthTestAgainstTerrain = true;
 
 		/* var terrainProvider = new Cesium.CesiumTerrainProvider({
 			url : 'https://assets.agi.com/stk-terrain/world',
@@ -941,7 +948,8 @@ export var tmMap = (function () {
 	function clockTracker(clock) {
 		var rd = Cesium.JulianDate.secondsDifference(viewer.clock.stopTime, viewer.clock.startTime);
 		var tl = Cesium.JulianDate.secondsDifference(viewer.clock.currentTime, viewer.clock.startTime);
-		$('#progressBar .progress-bar').css('width', (100 * tl / rd) + '%');
+		// $('#progressBar .progress-bar').css('width', (100 * tl / rd) + '%');
+	// 	console.log('progress: ' + (100 * tl / rd) + '%' );
 		if (clock.currentTime.equals(clock.stopTime)) {
 			fsm3D.finishPlay();
 			// resetReplay();
