@@ -508,25 +508,25 @@ export var tmMap = (function () {
 							// Click the VR button in the bottom right of the screen to switch to VR mode.
 
 							// scene3DOnly: true,
-							baseLayerPicker: false,
+							baseLayerPicker: true,
 							imageryProvider: new Cesium.UrlTemplateImageryProvider({
 								url: defaultBaseMapLayer.layerUrl,
 								maximumLevel: defaultBaseMapLayer.maxZoom,
 								credit: defaultBaseMapLayer.attribution
 							}),
-							animation: false,  // true: use Cesium.Animation control widget
+							animation: true,  // true: use Cesium.Animation control widget
 							fullscreenButton: true,
 							geocoder: false,
 							homeButton: false,
-							infoBox: false,
-							sceneModePicker: false,
-							selectionIndicator: false,
+							infoBox: true,
+							sceneModePicker: true,
+							selectionIndicator: true,
 							timeline: true,
-							navigationHelpButton: false,
-							navigationInstructionsInitiallyVisible: true,
+							navigationHelpButton: true,
+							navigationInstructionsInitiallyVisible: false,
 							scene3DOnly: true,
-							// automaticallyTrackDataSourceClocks: true,
-							creditContainer: 'creditContainer'
+							automaticallyTrackDataSourceClocks: true,
+							// creditContainer: 'creditContainer'
 							});
 
 		viewer.scene.globe.enableLighting = true;
@@ -538,7 +538,7 @@ export var tmMap = (function () {
 			requestVertexNormals : true
 		}); */
 
-    var terrainProvider = Cesium.createWorldTerrain();
+     	var terrainProvider = Cesium.createWorldTerrain();
 
 		var removeHandler = viewer.scene.postRender.addEventListener(function () {
 			$('#loadingOverlay').hide();
@@ -681,6 +681,9 @@ export var tmMap = (function () {
 
 	// Enter Track state
 	function goto3DTrack(event, from, to, t, tracks, leaveState) {
+
+		console.log('goto3DTrack');
+
 		// Remove old track datasources
 		removeTrackDataSources();
 
@@ -715,21 +718,38 @@ export var tmMap = (function () {
 	}
 
 	function grabAndRender3DTrack (track, autoPlay, fly) {
+
+		console.log('grabAndRender3DTrack');
+
 		$('#show-photos-label').hide();
 		savedTrackMarkerEntity = viewer.entities.getById(track.trackId);
 		var lGPX = omnivore.gpx(API_BASE_URL + '/v1/tracks/' + track.trackId + '/GPX', null).on('ready', function() {
+
+			console.log('lGPX:');
+			console.log(lGPX);
+
 			// First grab the GeoJSON data from omnivore
 			var trackGeoJSON = {type: 'FeatureCollection', features: []};
 			trackGeoJSON.features.push(tmUtils.extractSingleLineString(this.toGeoJSON()));
 
 			viewer.dataSources.add(Cesium.CzmlDataSource.load(tmUtils.buildCZMLForTrack(trackGeoJSON, lGPX, track.trackType))).then(function(ds) {
+				// console.log(trackGeoJSON);
 				trackDataSource = ds; // Save this data source so that we can remove it when needed
 				if (fly) {
 					viewer.flyTo(ds, {duration: tmConstants.FLY_TIME});
 				} else {
 					viewer.zoomTo(ds);
 				}
-				viewer.clock.shouldAnimate = false;
+				viewer.clock.shouldAnimate = true;
+//XXX
+				viewer.clock.startTime = Cesium.JulianDate.fromIso8601("2019-05-31T16:46:31Z");
+				viewer.clock.stopTime = Cesium.JulianDate.fromIso8601("2019-05-31T18:28:01Z");
+				viewer.clock.currentTime = viewer.clock.startTime.clone();
+				viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+				viewer.clock.multiplier = 1.0;
+				viewer.clock.shouldAnimate = true;
+
+				console.log('startTime = ' + viewer.clock.startTime.toString());
 
 				setUp3DTrackControls (trackGeoJSON, autoPlay);
 			});
@@ -868,7 +888,7 @@ export var tmMap = (function () {
 		// Set up play/pause functionality
 		$('#vd-play').show();
 		$('#vd-play').off();
-		viewer.clock.onTick.removeEventListener(clockTracker);
+		/// viewer.clock.onTick.removeEventListener(clockTracker);
 		readyToPlayButtonState();
 		$('#vd-play').click(function() {
 			if (fsm3D.current !== 'Playing') {
@@ -945,24 +965,24 @@ export var tmMap = (function () {
 
 	//}
 
-	function clockTracker(clock) {
-		var rd = Cesium.JulianDate.secondsDifference(viewer.clock.stopTime, viewer.clock.startTime);
-		var tl = Cesium.JulianDate.secondsDifference(viewer.clock.currentTime, viewer.clock.startTime);
-		// $('#progressBar .progress-bar').css('width', (100 * tl / rd) + '%');
-	// 	console.log('progress: ' + (100 * tl / rd) + '%' );
-		if (clock.currentTime.equals(clock.stopTime)) {
-			fsm3D.finishPlay();
-			// resetReplay();
-		}
-		//showPhotoNear(trackDataSource.entities.getById('track').position.getValue(clock.currentTime));
-	}
+	// function clockTracker(clock) {
+	// 	var rd = Cesium.JulianDate.secondsDifference(viewer.clock.stopTime, viewer.clock.startTime);
+	// 	var tl = Cesium.JulianDate.secondsDifference(viewer.clock.currentTime, viewer.clock.startTime);
+	// 	// $('#progressBar .progress-bar').css('width', (100 * tl / rd) + '%');
+	// // 	console.log('progress: ' + (100 * tl / rd) + '%' );
+	// 	if (clock.currentTime.equals(clock.stopTime)) {
+	// 		fsm3D.finishPlay();
+	// 		// resetReplay();
+	// 	}
+	// 	//showPhotoNear(trackDataSource.entities.getById('track').position.getValue(clock.currentTime));
+	// }
 
 	function resetPlay() {
-		viewer.clock.shouldAnimate = false;
+		viewer.clock.shouldAnimate = true;
 		viewer.trackedEntity = undefined;
 		trackDataSource.entities.getById('track').model.show = false;
 		readyToPlayButtonState();
-		viewer.clock.onTick.removeEventListener(clockTracker);
+		// viewer.clock.onTick.removeEventListener(clockTracker);
 	}
 
 	function playingButtonState() {
@@ -993,7 +1013,7 @@ export var tmMap = (function () {
 		if (viewer.clock.currentTime.equals(viewer.clock.stopTime) || (event === 'play')) {
 			viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[0]);
 		}
-		viewer.clock.onTick.addEventListener(clockTracker);
+		// viewer.clock.onTick.addEventListener(clockTracker);
 
 		playingButtonState();
 		viewer.trackedEntity = trackDataSource.entities.getById('track');
@@ -1002,8 +1022,8 @@ export var tmMap = (function () {
 	}
 
 	function enterPauseMode() {
-		viewer.clock.onTick.removeEventListener(clockTracker);
-		viewer.clock.shouldAnimate = false;
+		// viewer.clock.onTick.removeEventListener(clockTracker);
+		viewer.clock.shouldAnimate = true;
 		pausedButtonState();
 	}
 

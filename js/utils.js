@@ -61,6 +61,9 @@ export var tmUtils = (function () {
 
 	var buildCZMLForTrack = function (trackGeoJSON, l, trackType) {
 
+		// console.log('buildCZMLForTrack in:');
+		// console.log(trackGeoJSON);
+
 		// Remove all features except LineString (for now)
 		var j = 0;
 		var i = trackGeoJSON.features.length;
@@ -74,6 +77,9 @@ export var tmUtils = (function () {
 				}
 			}
 		}
+		console.log('patched trackGeoJSON:');
+		console.log(trackGeoJSON);
+
 		// Commenting out the below, because timestamps will be all made up
 		/* function isMonoIncr(dateArray) {
 			for (var i=1; i<dateArray.length; i++) {
@@ -98,19 +104,19 @@ export var tmUtils = (function () {
 		} */
 
 		// Replace original timestamps with fake ones (to have a smoother track animation)
-		var d = new Date(2015);
-		for (j=0; j<trackGeoJSON.features.length; j++) {
-
-			//if (isInvalidTimesArray(trackGeoJSON.features[j].properties.coordTimes)) {
-				trackGeoJSON.features[j].properties.coordTimes = [];
-				// var d = new Date(2015);
-				for (i=0; i<trackGeoJSON.features[j].geometry.coordinates.length; i++) {
-					trackGeoJSON.features[j].properties.coordTimes.push(d.toISOString());
-					d.setSeconds(d.getSeconds() + 10);
-				}
-			//}
-
-		}
+		// var d = new Date(2015);
+		// for (j=0; j<trackGeoJSON.features.length; j++) {
+		//
+		// 	//if (isInvalidTimesArray(trackGeoJSON.features[j].properties.coordTimes)) {
+		// 		trackGeoJSON.features[j].properties.coordTimes = [];
+		// 		// var d = new Date(2015);
+		// 		for (i=0; i<trackGeoJSON.features[j].geometry.coordinates.length; i++) {
+		// 			trackGeoJSON.features[j].properties.coordTimes.push(d.toISOString());
+		// 			d.setSeconds(d.getSeconds() + 10);
+		// 		}
+		// 	//}
+		//
+		// }
 
 		// By default, clock multiplier is 100, but duration should be less than 120 sec or greater than 240 sec
 		function calcMult(rd) {
@@ -164,11 +170,17 @@ export var tmUtils = (function () {
 
 				model: {
 				    // gltf : 'images/Cessna-208-CaravanW.glb',
+					//gltf: 'images/960bec91-a848-49b3-9fbd-7eaccc76edf4_animationtest.gltf',
+					//gltf: 'images/launchvehicle.glb',
 				    gltf: 'images/OE-SOE.glb',
 				    minimumPixelSize: 64,
 				    show: true
 				},
 				position: {
+					// interpolationAlgorithm: Cesium.LagrangePolynomialApproximation,
+					// interpolationDegree: 5,
+					interpolationDegree : 2,
+					interpolationAlgorithm : Cesium.HermitePolynomialApproximation,
 					cartographicDegrees: []
 				},
 				viewFrom: {
