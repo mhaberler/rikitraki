@@ -164,7 +164,11 @@ export var tmUtils = (function () {
 
 				model: {
 				    // gltf : 'images/Cessna-208-CaravanW.glb',
-				    gltf: 'images/OE-SOE.glb',
+					//gltf: 'images/960bec91-a848-49b3-9fbd-7eaccc76edf4_animationtest.gltf',
+					//gltf: 'images/launchvehicle.glb',
+					//gltf: 'images/960bec91-a848-49b3-9fbd-7eaccc76edf4_animationtest.gltf',
+					//gltf: 'images/launchvehicle.glb',
+				    gltf: 'images/' + localStorage.getItem('vehicle') + '.glb',
 				    minimumPixelSize: 64,
 				    show: true
 				},

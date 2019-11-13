@@ -63,4 +63,5 @@ function setUpMap() {
 	});
 }
 
+
 window.onload = setUpMap; // Ok, set up the map

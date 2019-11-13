@@ -737,6 +737,10 @@ export var tmForms = (function () {
 					$('#edit-track-region').val(track.trackRegionTags[1]);
 				}
 			}
+			$('#edit-vehicle-name').change(function () {
+				localStorage.setItem('vehicle',  $('#edit-vehicle-name').val());
+				console.log('vehicle-name change:' + $('#edit-vehicle-name').val());
+			});
 
 			$('#edit-track-photos-container').empty();
 			if (track.trackPhotos) {
