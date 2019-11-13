@@ -80,10 +80,10 @@
               <ul id="goto-menu" class="dropdown-menu scrollable-menu" role="menu">
               </ul>
             </li>
-
           </ul>
           <ul class="nav navbar-nav nav-pills" id="uploadEditContainer">
           </ul>
+
           <ul class="nav navbar-nav navbar-right">
             <li>
               <a data-toggle="collapse" id="about-btn" role="button" href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
@@ -95,16 +95,14 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right nav-pills">
-            <li>
-              <a href="#" id="fb-btn" title="Share on Facebook" class="btn btn-social-icon btn-facebook">
-                <i class="fa fa-facebook"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://twitter.com/" title="Share on Twitter" class="btn btn-social-icon btn-twitter custom-tweet-button">
-                <i class="fa fa-twitter"></i>
-              </a>
-            </li>
+              <li id="2Dbutton">
+                  <a data-toggle="collapse" id="terrain-control-2d" href="#" title="2D Map">2D</a>
+              </li>
+              <li>
+                  <a data-toggle="collapse" id="globe-control-refresh" href="#" title="Reset view">
+                      <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                  </a>
+              </li>
           </ul>
         </div>
       </div>
@@ -896,71 +894,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <img src="images/logolarge.png" style="height: 42px"><br><small><b>v0.7.3<sup>Beta</sup> by Ricardo Morin</b></small>
+            <img src="images/logolarge.png" style="height: 42px">
           </div>
           <div class="modal-body">
-            <h4>About this site</h4>
-            Welcome to the RikiTraki GPS track sharing site.
-            Use the slippy map to explore our outdoor experiences and learn more about their locations. Tracks, markers and photos
-            are clickable. The controls at the top left part of the map provide for zooming, base map and layer display control. The control at the bottom left
-            is an interactive elevation profile widget. The track label at the top right provides track information and a slide show (if pictures are available.)<br><br>
-            You are welcome to register if you wish to upload and share your own tracks on this site.<br><br>
-            <b>This is a work in progress, currently in Beta.</b> Please report bugs and omissions. We are continually testing and enhancing this application over time.<br><br>
-            To learn more about this and other projects, head over to the <a href="https://morinricardo.com" target="_blank">blog.</a>
-            <div>
-              <h4>Feedback and questions are greatly appreciated</h4>
-              <a href="https://twitter.com/intent/tweet?screen_name=jimmieangel" class="twitter-mention-button" data-related="jimmieangel">Tweet to @jimmieangel</a>
-              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-              </script>
-            </div> <!-- feedback -->
-            <hr>
-            <a class="btn btn-default" data-toggle="collapse" href="#buildingBlocks" aria-expanded="false" aria-controls="collapseExample">Geek info...</a>
-            <div class="collapse" id="buildingBlocks">
-            <h4>Building blocks</h4>
-              This project uses free and open source components and data as shown below. You are welcome to <a href="https://github.com/jimmyangel/rikitraki" target="_blank">fork it</a> and contribute to its development.<br><br>
-              <b>Core mapping framework:</b>
-              <ul>
-               <li>The powerful <a href="http://leafletjs.com/" target="_blank">Leaflet</a> Javascript library for projection maps</li>
-               <li>The amazing <a href="http://cesiumjs.org/" target="_blank">Cesium</a> Javascript library for globe and 3D mapping</li>
-              </ul>
-              <b>Components and plugins:</b>
-                <ul>
-                  <li><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> for mobile friendly navigation bar and dialogs</li>
-                  <li><a href="https://jquery.com/" target="_blank">jQuery</a> mobile-friendly Javascript utility library</li>
-                  <li><a href="https://github.com/MrMufflon/Leaflet.Elevation" target="_blank">Leaflet.Elevation</a> to display trail elevation profile</li>
-                  <li><a href="https://github.com/jseppi/Leaflet.MakiMarkers" target="_blank">Leaflet.MakiMarkers</a> to display nice Maki icons in markers</li>
-                  <li><a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a> icons</li>
-                  <li><a href="https://icomoon.io/" target="_blank">IcoMoon</a> icons</li>
-                  <li><a href="http://lokeshdhakar.com/projects/lightbox2/" target="_blank">Lightbox2</a> to display pictures and slideshow</li>
-                  <li><a href="https://github.com/mapbox/leaflet-omnivore" target="_blank">Omnivore</a> plug-in to consume GPS tracks in .GPX format</li>
-                  <li><a href="http://spin.js.org/" target="_blank">spin.js</a> spinning activity indicator</li>
-                  <li><a href="http://joequery.github.io/Stupid-Table-Plugin/" target="_blank">Stupid-table-plugin</a> super simple table sort plug-in</li>
-                  <li><a href="https://github.com/blueimp/JavaScript-Canvas-to-Blob/" target="_blank">JavaScript Canvas to Blob</a> polyfill for standard canvas.toBlob method</li>
-                  <li><a href="https://github.com/benkeen/country-region-selector/" target="_blank">Country-Region-Selector</a> utility for selecting coordinated country/region</li>
-                  <li><a href="https://github.com/RubaXa/Sortable" target="_blank">RubaXa Sortable</a> library for drag n'drop support</li>
-                  <li><a href="http://publicdomainvectors.org/" target="_blank">publicdomainvectors.org</a> public domain icons</li>
-               </ul>
-              <b>Base maps:</b>
-                <ul>
-                  <li><a href="http://www.thunderforest.com/" target="_blank">Thunderforest</a> outdoors map that shows topographic features and information relevant to hiking</li>
-                  <li><a href="http://openstreetmap.org" target="_blank">Open Street Map</a> that shows roads, labels and geographic features</li>
-                  <li><a href="http://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9" target="_blank">ESRI World Imagery</a> to show satellite and aerial imagery</li>
-                  <li><a href="http://www.usgs.gov/" target="_blank">US Geological Service</a> official topographic map for the US only</li>
-                  <li><a href="http://www.arcgis.com/home/item.html?id=99cd5fbd98934028802b4f797c4b1732" target="_blank">ESRI USA Topo Maps</a> that present detailed topographic maps for the US only</li>
-                </ul>
-              <b>Some sign images:</b>
-                <ul>
-                  <li><a href="http://www.trafficsign.us/" target="_blank">Manual of traffic signs</a> by <a href="http://www.richardcmoeur.com/" target="_blank">Richard C. Moeur</a></li>
-                </ul>
-              <b>Server side:</b>
-                <ul>
-                  <li><a href="https://nodejs.org/en/" target="_blank">Node js</a> server side javascript engine</li>
-                  <li><a href="http://expressjs.com/" target="_blank">Express</a> framework for web serving and REST APIs</li>
-                  <li><a href="https://www.mongodb.org/" target="_blank">MongoDB</a> NoSQL document oriented database</li>
-                  <li><a href="http://www.mailgun.com/" target="_blank">MailGun</a> email service</li>
-                  <li><a href="https://cloud.google.com/" target="_blank">Google Cloud</a> and <a href="https://www.netlify.com/" target="_blank">Netlify</a> hosting services</li>
-                </ul>
-            </div>
+              <div id="infoPanel"></div>
           </div> <!-- modal body -->
         </div> <!-- modal content -->
       </div> <!-- modal dialog -->
@@ -985,53 +922,9 @@
       <div>
         <div class="leaflet-top leaflet-left">
           <div class="leaflet-control leaflet-bar" id="2Dbutton">
-          <div id="infoPanel"></div>
         </div>
-
-          <!-- <div class="leaflet-bar leaflet-control">
-            <a class="leaflet-control-zoom-in" href="#" title="Zoom in">+</a>
-            <a class="leaflet-control-zoom-out" href="#" title="Zoom out">-</a>
-          </div> -->
-          <div class="leaflet-control leaflet-bar" id="2Dbutton">
-            <a id="terrain-control-2d" href="#" style="text-shadow: 2px 2px 2px #666666;" href="#" title="2D Map">2D</a>
-          </div>
-          <div class="leaflet-control leaflet-bar" style="display: none;">
-            <a id="globe-control-north" href="#" title="North">N</a>
-          </div>
-          <div class="leaflet-control leaflet-bar">
-            <a id="globe-control-refresh" href="#" title="Reset view"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
-          </div>
-          <!-- <div class="leaflet-control leaflet-bar">
-            <a id="vd-play" style="display: none;" href="#" title="Play/Pause"><span class="glyphicon glyphicon-play blink_me" aria-hidden="true"></span></a>
-          </div>
-          <div id="vd-speed" class="leaflet-control leaflet-bar" style="display: none;">
-            <a id="vd-faster" href="#" title="Faster"><i class="icon-fast-fw"></i></a>
-            <a id="vd-slower" href="#" title="Slower"><i class="icon-fast-fw-outline"></i></a>
-          </div> -->
-          <!-- <div id="layer-control" class="leaflet-control leaflet-control-layers" aria-haspopup="true">
-            <a class="leaflet-control-layers-toggle" href="#" title="Layers"></a>
-            <form class="leaflet-control-layers-list">
-              <div id="basemap-layer-control" class="leaflet-control-layers-base">
-              </div>
-              <div id="overlay-layer-control" style="display: none;">
-                <div class="leaflet-control-layers-separator"></div>
-                <div class="leaflet-control-layers-overlays">
-                  <label><input id="show-markers" type="checkbox" class="leaflet-control-layers-selector" checked=""><span> Show markers for all tracks</span></label>
-                  <label id="show-photos-label"><input id="show-photos" type="checkbox" class="leaflet-control-layers-selector" checked=""><span> Show track photos</span></label>
-                </div>
-              </div>
-            </form>
-          </div> -->
         </div>
-        <!-- <div id="infoPanel" class="leaflet-top leaflet-left"></div> -->
-
         <div class="leaflet-bottom leaflet-right">
-          <!-- <div id="progressBar" style="width: 40%; float: right; padding: 1px 8px; display: none;">
-            <div class="progress">
-              <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
-            </div>
-          </div> -->
-          <!-- <div class="help3d leaflet-control"><div>Control-Drag to rotate and tilt</div></div> -->
           <div id="creditContainer" class="leaflet-control-attribution leaflet-control"></div>
         </div>
       </div>

@@ -241,21 +241,18 @@ export var tmMap = (function () {
 
 	var buildMotdInfoBoxDOMElement = function (tracks, data) {
 		var infoPanelContainer = L.DomUtil.create('div', 'info motd infoPanelContainer');
-		var infoPanelTitle = L.DomUtil.create('div', 'infoPanelTitle', infoPanelContainer);
 		var infoPanelBody = L.DomUtil.create('div', 'infoPanelBody', infoPanelContainer);
 		var infoPanelDescription = L.DomUtil.create('div', 'motdDescription infoPanelDescription', infoPanelBody);
-		infoPanelTitle.innerHTML = '<button class="close" aria-hidden="true">&times;</button><b>What\'s New...</b>';
 		var motdHTML = '<table id="motdTable" class="table table-condensed table-hover"><tbody>';
 		for (var i=0; i<data.motd.motdTracks.length; i++) {
 			motdHTML += '<tr><td><img class="motdThumbs" src=' + API_BASE_URL + '/v1/tracks/' + data.motd.motdTracks[i][0] + '/thumbnail/' + data.motd.motdTracks[i][1] +
-						// '></td><td>' +
 						'></td><td>' +
 						data.motd.motdTracks[i][2] +
 						'</td><td style="display:none">' +
 						data.motd.motdTracks[i][0] + '</td></tr>';
 		}
 		motdHTML += '</tbody></table>';
-		infoPanelDescription.innerHTML = motdHTML;
+		infoPanelContainer.innerHTML = motdHTML;
 		return infoPanelContainer;
 	};
 
@@ -756,7 +753,7 @@ export var tmMap = (function () {
 
 			// Set up track name in info box
 			$('#infoPanel').empty();
-			$('#infoPanel').append('<div class="leaflet-control info infoPanelContainer"></div>');
+			$('#infoPanel').append('<div class="infoPanelContainer"></div>');
 			buildTrackInfoPanel(track, trackGeoJSON, '#infoPanel>.infoPanelContainer', null, function(geoTags) {
 				tmUtils.buildCZMLForGeoTags(geoTags, viewer, function (geoTagsCZML) {
 					viewer.dataSources.add(Cesium.CzmlDataSource.load(geoTagsCZML)).then(function(gds) {
@@ -796,9 +793,8 @@ export var tmMap = (function () {
 	}
 
 	function buildTrackInfoPanel(track, trackGeoJSON, container, picGeoTagCallback, doneWithThumbsCallback) {
-
 		var trackMetrics = [0, 0, 0, Infinity];
-		var imperial = (track.trackRegionTags.indexOf('US') === -1) ? false : true;
+		var imperial = track.trackRegionTags.indexOf('US') !== -1;
 		var trackDate = 'Not Available';
 		for (var i=0; i<trackGeoJSON.features.length; i++) {
 			if (trackGeoJSON.features[i].geometry.type === 'LineString') {
@@ -821,12 +817,8 @@ export var tmMap = (function () {
 		}
 		var infoPanelHTML = '';
 		infoPanelHTML +=
-			'<div class="infoPanelTitle">' +
-				'<button class="close" aria-hidden="true">&times;</button>' +
-				'<b>' + track.trackName + ' ' + (track.trackFav ? tmConstants.FAVORITE : '') + '</b>' +
-			'</div>' +
-			'<div class="infoPanelBody">' +
-				'<div class="infoPanelDescription">' +
+				'<div class="">' +
+					'<hr><b>' + track.trackName + ' ' + (track.trackFav ? tmConstants.FAVORITE : '') + '</b><br>' +
 					'<hr><b>' + track.trackLevel + '</b><br>' +
 					' <b>Length:</b> ' + (imperial ? ((Math.round(trackMetrics[0] * 62.1371) / 100) + 'mi') : (trackMetrics[0] + 'km')) +
 					' - <b>Elevation Gain:</b> ' + (imperial ? ((Math.round(trackMetrics[1] * 3.28084)) + 'ft') : (trackMetrics[1] + 'm')) +
