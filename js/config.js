@@ -2,8 +2,8 @@
 
 export var tmConfig = {
   	getApiBaseUrl: function () {
-        return 'http://localhost:3000/api';
-		//return 'https://rikitrakiws.mah.priv.at/api';
+        	//return 'http://localhost:3000/api';
+		return 'https://rikitrakiws.mah.priv.at/api';
 		// return 'https://services.rikitraki.com/api';
   	},
   	getTrackId: function () {
