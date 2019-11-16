@@ -57,9 +57,21 @@ export var tmMap = (function () {
 
 		map = new L.map('map');
 
+		/**
+		 * Once the 2D view rendered, this function is called
+		 */
 		map.whenReady(function() {
+			$('#2Dbutton').hide();
+			$('#3Dbutton').show();
+			$('#loadingOverlay').hide();
 			$('#loadingOverlay').hide();
 			$('#loadingSpinner').spin(false);
+			$('#terrain-control-2d').hide();
+			$('#terrain-control-3d').off('click');
+			$('#terrain-control-3d').click(function () {
+				window.location.href = window.location.href + '&terrain=yes';
+				return false;
+			});
 		});
 
 		// Populate basemap layers from JSON config file
@@ -678,7 +690,6 @@ export var tmMap = (function () {
 
 	// Enter Track state
 	function goto3DTrack(event, from, to, t, tracks, leaveState) {
-
 		console.log('goto3DTrack');
 
 		// Remove old track datasources
@@ -873,8 +884,10 @@ export var tmMap = (function () {
 		}, function(jqxhr, textStatus) {console.log(textStatus);});
 	}
 
+	/**
+	 * This function is called once the 3D Map was rendered
+	 */
 	function setUp3DTrackControls (trackGeoJSON, autoPlay) {
-
 		var trailHeadHeight = trackGeoJSON.features[0].geometry.coordinates[0][2];
 
 		// Set up play/pause functionality
@@ -922,6 +935,10 @@ export var tmMap = (function () {
 				$('#vd-play').click();
 			}, tmConstants.AUTOPLAY_DELAY);
 		}
+
+		var el = $('.cesium-viewer-toolbar').detach();
+		$('#map-types').append(el);
+		$(".cesium-viewer-toolbar").removeClass("cesium-viewer-toolbar");
 	}
 
 	function refresh3DTrack(event, from, to, trackGeoJSON) {
@@ -1147,7 +1164,14 @@ export var tmMap = (function () {
 		});
 
 		var viewer = initCesiumViewer();
+
 		var initialCameraPosition = viewer.camera.position.clone();
+
+		// Place only the Cesium canvas into fullscreen.
+
+		$('#fullscreen-button').off().click(function() {
+			Cesium.Fullscreen.requestFullscreen(viewer.canvas);
+		});
 
 		layout3DTrackMarkers(tracks);
 		updateTrackMarkersHeight(tracks);

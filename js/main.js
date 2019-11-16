@@ -42,10 +42,16 @@ function setUpMap() {
 
 		// Now figure out what view to set up
 		if ((tmConfig.getTerrainFlag() || tmConfig.getGlobeFlag()) && isWebGlSupported) {
+			$('#3Dbutton').hide();
+			$('#2Dbutton').show();
+			$('#full-screen').show();
 			$.getScript('lib/Cesium/Cesium.js', function () {
 				tmMap.setUp3DView(data.tracks, (trackId in data.tracks) ? data.tracks[trackId] : undefined);
 			});
 		} else {
+			$('#3Dbutton').show();
+			$('#2Dbutton').hide();
+			$('#full-screen').hide();
 			// Get JSON layer config file and wait before populating map
 			// Set up map and get layer control which we will need later on
 			var layerControl = tmMap.setUpMap();
