@@ -748,6 +748,7 @@ export var tmMap = (function () {
 				} else {
 					viewer.zoomTo(ds);
 				}
+				viewer.trackedEntity = ds.entities.getById('track');
 				viewer.clock.shouldAnimate = true;
 //XXX
 
