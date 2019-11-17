@@ -64,7 +64,7 @@ export var tmMap = (function () {
 			$('#2Dbutton').hide();
 			$('#3Dbutton').show();
 			$('#loadingOverlay').hide();
-			$('#loadingOverlay').hide();
+		//	$('#loadingOverlay').hide();
 			$('#loadingSpinner').spin(false);
 			$('#terrain-control-2d').hide();
 			$('#terrain-control-3d').off('click');
