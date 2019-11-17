@@ -750,8 +750,10 @@ export var tmMap = (function () {
 				}
 				viewer.clock.shouldAnimate = true;
 //XXX
-				viewer.clock.startTime = Cesium.JulianDate.fromIso8601("2019-05-31T16:46:31Z");
-				viewer.clock.stopTime = Cesium.JulianDate.fromIso8601("2019-05-31T18:28:01Z");
+
+				viewer.clock.startTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[0]);
+				var np = trackGeoJSON.features[0].properties.coordTimes.length;
+				viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[np-1]);
 				viewer.clock.currentTime = viewer.clock.startTime.clone();
 				viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
 				viewer.clock.multiplier = 1.0;
