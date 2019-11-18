@@ -6,4 +6,9 @@ stuff
 test
 public
 .DS_Store
+cert.pem
+cert.pem
+certificate.pem
+http-server
+key.pem
 
