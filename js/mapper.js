@@ -2,6 +2,7 @@
 
 import L from 'leaflet';
 window.d3 = require ('d3');
+import {CanvasRecorder} from './recorder/CanvasRecorder.js';
 require ('leaflet.elevation/dist/leaflet.elevation.min.js');
 require ('../components/Leaflet.MakiMarkers/Leaflet.MakiMarkers.js');
 require ('../components/leaflet.markercluster/dist/leaflet.markercluster.js');
@@ -12,6 +13,8 @@ import {tmForms} from './forms.js';
 import {tmData} from './data.js';
 import {tmUtils} from './utils.js';
 import {tmConfig, tmConstants, tmBaseMapLayers, tmMessages} from './config.js';
+
+var recorder = undefined;
 
 export var tmMap = (function () {
 	var map; // For leaflet
@@ -726,7 +729,6 @@ export var tmMap = (function () {
 	}
 
 	function grabAndRender3DTrack (track, autoPlay, fly) {
-
 		console.log('grabAndRender3DTrack');
 
 		$('#show-photos-label').hide();
@@ -1175,6 +1177,17 @@ export var tmMap = (function () {
 		$('#fullscreen-button').off().click(function() {
 			Cesium.Fullscreen.requestFullscreen(viewer.canvas);
 		});
+
+		recorder = new CanvasRecorder(viewer.canvas);
+
+		setTimeout(function () {
+			recorder.start();
+		}, 3000);
+
+		setTimeout(function () {
+			recorder.stop();
+			recorder.save('Aufnahme');
+		}, 30000);
 
 		layout3DTrackMarkers(tracks);
 		updateTrackMarkersHeight(tracks);
