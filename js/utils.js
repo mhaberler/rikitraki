@@ -59,9 +59,8 @@ export var tmUtils = (function () {
 		return re.test(email);
 	};
 
-	var buildCZMLForTrack = function (trackGeoJSON, l, trackType) {
+	var buildCZMLForTrack = function (trackGeoJSON, l, trackType, vehicleInfo) {
 
-		// console.log('buildCZMLForTrack in:');
 		// console.log(trackGeoJSON);
 
 		// Remove all features except LineString (for now)
@@ -129,7 +128,6 @@ export var tmUtils = (function () {
 			return 100;
 		}
 
-
 		// Base structure for the CZML
 		var trackCZML = [
 			{
@@ -167,13 +165,9 @@ export var tmUtils = (function () {
 			//			verticalOrigin: 'BOTTOM',
 			//			show: false
 			//	},
-
 				model: {
-				    // gltf : 'images/Cessna-208-CaravanW.glb',
-					//gltf: 'images/960bec91-a848-49b3-9fbd-7eaccc76edf4_animationtest.gltf',
-					//gltf: 'images/launchvehicle.glb',
-				    gltf: 'images/' + localStorage.getItem('vehicle') + '.glb',
-				    minimumPixelSize: 64,
+					gltf: "data:model/gltf-binary;base64," + vehicleInfo.blob,
+				    minimumPixelSize: 128,
 				    show: true
 				},
 				position: {
@@ -264,7 +258,6 @@ export var tmUtils = (function () {
 		trackCZML[1].availability = trackGeoJSON.features[0].properties.coordTimes[0] + '/' + trackGeoJSON.features[j-1].properties.coordTimes[lastIndex];
 
 		return trackCZML;
-
 	};
 
 	var buildCZMLForGeoTags = function (geoTags, viewer, callback) {
