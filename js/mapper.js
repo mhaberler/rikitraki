@@ -13,6 +13,7 @@ import {tmData} from './data.js';
 import {tmUtils} from './utils.js';
 import {tmConfig, tmConstants, tmBaseMapLayers, tmMessages} from './config.js';
 
+
 export var tmMap = (function () {
 	var map; // For leaflet
 	var viewer; //For Cesium
@@ -733,36 +734,37 @@ export var tmMap = (function () {
 		savedTrackMarkerEntity = viewer.entities.getById(track.trackId);
 		var lGPX = omnivore.gpx(API_BASE_URL + '/v1/tracks/' + track.trackId + '/GPX', null).on('ready', function() {
 
-			console.log('lGPX:');
-			console.log(lGPX);
+			console.log('lGPX:', lGPX);
 
 			// First grab the GeoJSON data from omnivore
 			var trackGeoJSON = {type: 'FeatureCollection', features: []};
 			trackGeoJSON.features.push(tmUtils.extractSingleLineString(this.toGeoJSON()));
 
-			viewer.dataSources.add(Cesium.CzmlDataSource.load(tmUtils.buildCZMLForTrack(trackGeoJSON, lGPX, track.trackType))).then(function(ds) {
-				// console.log(trackGeoJSON);
-				trackDataSource = ds; // Save this data source so that we can remove it when needed
-				if (fly) {
-					viewer.flyTo(ds, {duration: tmConstants.FLY_TIME});
-				} else {
-					viewer.zoomTo(ds);
-				}
-				viewer.trackedEntity = ds.entities.getById('track');
-				viewer.clock.shouldAnimate = true;
-//XXX
+			tmData.getVehicle({name: track.trackVehicle, blob: true}, function(data) {
+				let vehicleInfo  = data.vehicles[track.trackVehicle];
+				viewer.dataSources.add(Cesium.CzmlDataSource.load(tmUtils.buildCZMLForTrack(trackGeoJSON, lGPX, track.trackType, vehicleInfo))).then(function(ds) {
+					// console.log(trackGeoJSON);
+					trackDataSource = ds; // Save this data source so that we can remove it when needed
+					if (fly) {
+						viewer.flyTo(ds, {duration: tmConstants.FLY_TIME});
+					} else {
+						viewer.zoomTo(ds);
+					}
 
-				viewer.clock.startTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[0]);
-				var np = trackGeoJSON.features[0].properties.coordTimes.length;
-				viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[np-1]);
-				viewer.clock.currentTime = viewer.clock.startTime.clone();
-				viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
-				viewer.clock.multiplier = 1.0;
-				viewer.clock.shouldAnimate = true;
+					viewer.trackedEntity = ds.entities.getById('track');
+					viewer.clock.shouldAnimate = true;
+					viewer.clock.startTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[0]);
+					var np = trackGeoJSON.features[0].properties.coordTimes.length;
+					viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(trackGeoJSON.features[0].properties.coordTimes[np-1]);
+					viewer.clock.currentTime = viewer.clock.startTime.clone();
+					viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+					viewer.clock.multiplier = 1.0;
+					viewer.clock.shouldAnimate = true;
 
-				console.log('startTime = ' + viewer.clock.startTime.toString());
+					console.log('startTime = ' + viewer.clock.startTime.toString());
 
-				setUp3DTrackControls (trackGeoJSON, autoPlay);
+					setUp3DTrackControls (trackGeoJSON, autoPlay);
+				})
 			});
 
 			// Set up track name in info box
