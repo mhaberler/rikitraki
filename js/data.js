@@ -142,5 +142,14 @@ export var tmData = {
 			 },
 			success: function() {}
 		});
-	}
+	},
+	getVehicle: function (query, successCallback, errorCallback) {
+		return $.ajax({
+			url: API_BASE_URL + '/v1/vehicles/',
+			type: 'GET',
+			data:  query,
+			success: successCallback,
+			error: errorCallback
+		});
+	},
 }
