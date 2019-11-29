@@ -716,10 +716,26 @@ export var tmForms = (function () {
 		var trackGeoJSON = tl.toGeoJSON();
 
 		$('#edit-btn').click(function() {
+
+			// populate the vehicles select dropdown
+			tmData.getVehicle({},function(data) {
+				let options = [];
+				for (let key in data.vehicles) {
+				  options.push("<option>" + key + "</option>");
+                }
+				$('#edit-vehicle-name').html(options);
+				// set current vehicle from track only after all retrieved
+				$('#edit-vehicle-name').val(track.trackVehicle);
+			}, function(jqxhr) { // jqxhr, textStatus
+				displaySaveError('getVehicle error, status ' + jqxhr.status + ' - ' + jqxhr.responseText);
+				console.log(jqxhr);
+			});
+
 			// Set current values on the form for editing
 			$('#edit-track-name').val(track.trackName);
 			$('#edit-track-description').val(track.trackDescription);
-			$('#edit-vehicle-name').val(track.trackVehicle);
+
+
 			$('#edit-track-activity').val(track.trackType ? track.trackType : 'Hiking'); // For compatibility with old data
 			$('.edit-track-level[value=' + track.trackLevel + ']').prop('checked', true);
 			if (track.trackFav) {
@@ -737,10 +753,10 @@ export var tmForms = (function () {
 					$('#edit-track-region').val(track.trackRegionTags[1]);
 				}
 			}
-			$('#edit-vehicle-name').change(function () {
-				localStorage.setItem('vehicle',  $('#edit-vehicle-name').val());
-				console.log('vehicle-name change:' + $('#edit-vehicle-name').val());
-			});
+			// $('#edit-vehicle-name').change(function () {
+			// 	localStorage.setItem('vehicle',  $('#edit-vehicle-name').val());
+			// 	console.log('vehicle-name change:' + $('#edit-vehicle-name').val());
+			// });
 
 			$('#edit-track-photos-container').empty();
 			if (track.trackPhotos) {
